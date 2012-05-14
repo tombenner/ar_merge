@@ -1,8 +1,7 @@
+require 'ar_merge/version'
 require 'active_record'
 
 module ARMerge
-  VERSION = File.read( File.join(File.dirname(__FILE__),'..','VERSION') ).strip
-
   def self.included(base)
     base.extend ClassMethods
     base.send(:include, InstanceMethods)
@@ -21,7 +20,7 @@ module ARMerge
         
         #update counters, this is very basic/hacky/not secure for customized counters...
         counter = "#{association_name}_count"
-        next unless other.respond_to?(counter) && other.respond_to?("#{counter}=")
+        next unless other.respond_to?(counter) and respond_to?("#{counter}=")
         self.class.update_counters(id, counter => other.send(counter))
       end
 
